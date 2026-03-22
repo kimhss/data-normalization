@@ -1,0 +1,37 @@
+{
+  "id": 1296270,
+  "name": "backend-skills",
+  "full_name": "octocat/backend-skills",
+  "owner": {
+    "login": "octocat",
+    "avatar_url": "https://github.com/images/error/octocat_happy.gif",
+    "type": "User"
+  },
+  "html_url": "https://github.com/octocat/backend-skills",
+  "description": "Spring Boot and Python backend skill templates",
+  "stargazers_count": 85,
+  "forks_count": 20,
+  "size": 200,
+  "default_branch": "main",
+  "topics": ["spring", "python", "backend", "api", "database"],
+  "license": "MIT",
+  "homepage": null,
+  "pushed_at": "2024-02-15T08:00:00Z",
+  "raw_metadata": null,
+  "files": [
+    {
+      "name": "SKILL.md",
+      "path": "skills/spring/SKILL.md",
+      "sha": "def111",
+      "html_url": "https://github.com/octocat/backend-skills/blob/main/skills/spring/SKILL.md",
+      "content": "# Spring Boot Skill\n\n## Description\nSpring Boot 기반의 REST API 서버를 구축하기 위한 스킬입니다.\n\n## Usage\n```java\n@RestController\n@RequestMapping(\"/api\")\npublic class ApiController {\n    @GetMapping(\"/hello\")\n    public String hello() {\n        return \"Hello World\";\n    }\n}\n```"
+    },
+    {
+      "name": "SKILL.md",
+      "path": "skills/python/SKILL.md",
+      "sha": "def222",
+      "html_url": "https://github.com/octocat/backend-skills/blob/main/skills/python/SKILL.md",
+      "content": "# Python Skill\n\n## Description\nPython을 활용한 백엔드 서비스 개발 스킬입니다.\n\n## Usage\n```python\nfrom fastapi import FastAPI\napp = FastAPI()\n\n@app.get(\"/\")\ndef read_root():\n    return {\"Hello\": \"World\"}\n```"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "id": 1296269,
+  "name": "frontend-skills",
+  "full_name": "octocat/frontend-skills",
+  "owner": {
+    "login": "octocat",
+    "avatar_url": "https://github.com/images/error/octocat_happy.gif",
+    "type": "User"
+  },
+  "html_url": "https://github.com/octocat/frontend-skills",
+  "description": "React and Tailwind CSS frontend skill templates",
+  "stargazers_count": 120,
+  "forks_count": 30,
+  "size": 108,
+  "default_branch": "main",
+  "topics": ["react", "tailwind", "frontend", "css"],
+  "license": "MIT",
+  "homepage": null,
+  "pushed_at": "2024-03-01T10:00:00Z",
+  "raw_metadata": null,
+  "files": [
+    {
+      "name": "SKILL.md",
+      "path": "skills/react/SKILL.md",
+      "sha": "abc111",
+      "html_url": "https://github.com/octocat/frontend-skills/blob/main/skills/react/SKILL.md",
+      "content": "# React Skill\n\n## Description\nReact 컴포넌트를 효율적으로 생성하고 관리하기 위한 스킬입니다.\n\n## Usage\n```js\nconst [count, setCount] = useState(0);\nreturn <button onClick={() => setCount(count + 1)}>{count}</button>;\n```"
+    },
+    {
+      "name": "SKILL.md",
+      "path": "skills/tailwind/SKILL.md",
+      "sha": "abc222",
+      "html_url": "https://github.com/octocat/frontend-skills/blob/main/skills/tailwind/SKILL.md",
+      "content": "# Tailwind CSS Skill\n\n## Description\nTailwind CSS를 활용한 UI 컴포넌트 스타일링 스킬입니다.\n\n## Usage\n```html\n<div class=\"flex items-center justify-between p-4 bg-white shadow\">\n  <h1 class=\"text-xl font-bold\">Hello</h1>\n</div>\n```"
+    }
+  ]
+}

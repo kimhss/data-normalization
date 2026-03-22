@@ -1,72 +1,100 @@
 package com.example.demo.service;
 
-import com.example.demo.GithubSearchClient;
 import com.example.demo.dto.GithubFileItem;
-import com.example.demo.dto.GithubSearchResponse;
+import com.example.demo.dto.GithubRepoItem;
+import com.example.demo.entity.Repository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import tools.jackson.databind.ObjectMapper;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.io.File;
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class CrawlerService {
 
-    private final GithubSearchClient githubSearchClient;
     private final SkillNormalizeService normalizeService;
-    private final StarterKitService starterKitService;
+    private final ObjectMapper objectMapper;
 
-    public void run() throws InterruptedException {
+    private static final String SKILLS_BASE_PATH = "data/prompts/skills";
+    private static final String AGENTS_BASE_PATH = "data/prompts/agents";
 
-        // 1. SKILL.md + agents.md 검색
-        List<GithubFileItem> allItems = new ArrayList<>();
-        allItems.addAll(fetchAllPages("filename:SKILL.md"));
-        allItems.addAll(fetchAllPages("filename:agents.md"));
+    public void run() {
+        log.info("크롤링 시작");
+        processDirectory(SKILLS_BASE_PATH, false);
+        processDirectory(AGENTS_BASE_PATH, true);
+    }
 
-        // 2. 레포별 그룹핑
-        Map<String, List<GithubFileItem>> grouped = allItems.stream()
-                .collect(Collectors.groupingBy(
-                        item -> item.getRepository().getFullName()
-                ));
+    private void processDirectory(String basePath, boolean isAgent) {
+        File baseDir = new File(basePath);
 
-        // 3. 레포별 처리
-        for (Map.Entry<String, List<GithubFileItem>> entry : grouped.entrySet()) {
-            String repoName = entry.getKey();
-            List<GithubFileItem> repoItems = entry.getValue();
+        if (!baseDir.exists() || !baseDir.isDirectory()) {
+            log.error("폴더가 존재하지 않습니다: {}", baseDir.getAbsolutePath());
+            return;
+        }
 
-            // 4. 각 파일 내용 fetch
-            List<String> contents = repoItems.stream()
-                    .map(item -> githubSearchClient.fetchContent(item.getUrl()))
-                    .toList();
+        // track 폴더 순회 (FRONTEND, BACKEND, FULLSTACK)
+        File[] trackDirs = baseDir.listFiles(File::isDirectory);
+        if (trackDirs == null) return;
 
-            // 5. starter_kit + skill_assets 저장
-            starterKitService.processRepo(repoName, repoItems, contents);
+        for (File trackDir : trackDirs) {
+            log.info("[{}] track 처리 시작: {}", isAgent ? "AGENT" : "SKILL", trackDir.getName());
 
-            log.info("처리 완료: {}", repoName);
-            Thread.sleep(1500);
+            File[] jsonFiles = trackDir.listFiles(
+                    (dir, name) -> name.endsWith(".json")
+            );
+            if (jsonFiles == null) continue;
+
+            for (File jsonFile : jsonFiles) {
+                try {
+                    processFile(jsonFile, isAgent);
+                } catch (Exception e) {
+                    log.error("파일 처리 실패: {}", jsonFile.getName(), e);
+                }
+            }
         }
     }
 
-    private List<GithubFileItem> fetchAllPages(String query) throws InterruptedException {
-        List<GithubFileItem> result = new ArrayList<>();
-        int page = 1;
+    private void processFile(File file, boolean isAgent) {
+        log.info("파일 처리: {}", file.getPath());
 
-        while (page <= 10) {
-            GithubSearchResponse response = githubSearchClient.search(query, page);
+        try {
+            GithubRepoItem repoItem = objectMapper.readValue(file, GithubRepoItem.class);
 
-            if (response == null || response.getItems() == null
-                    || response.getItems().isEmpty()) break;
+            if (repoItem.getFiles() == null || repoItem.getFiles().isEmpty()) {
+                log.warn("파일 목록 없음: {}", repoItem.getFullName());
+                return;
+            }
 
-            result.addAll(response.getItems());
-            page++;
-            Thread.sleep(1500);
+            Repository repository = normalizeService.normalizeRepository(repoItem);
+
+            for (GithubFileItem fileItem : repoItem.getFiles()) {
+                String rawContent = fileItem.getContent();
+                if (rawContent == null || rawContent.isBlank()) {
+                    log.warn("content 없음: {}/{}", repoItem.getFullName(), fileItem.getPath());
+                    continue;
+                }
+
+                if (isAgent) {
+                    normalizeService.normalizeAgent(repository, fileItem, rawContent);
+                    log.info("Agent 저장 완료: {}", repoItem.getFullName());
+                } else {
+                    normalizeService.normalizeSkill(repository, fileItem, rawContent);
+                    log.info("Skill 저장 완료: {}/{}", repoItem.getFullName(), fileItem.getPath());
+                }
+            }
+
+        } catch (Exception e) {
+            log.error("JSON 파싱 실패: {}", file.getName(), e);
         }
+    }
 
-        return result;
+    // OCI Object Storage 연동 시 이 메서드만 교체
+    private GithubRepoItem readFromOci(String bucket, String objectName) throws IOException {
+        // TODO: OCI SDK 연동
+        return null;
     }
 }

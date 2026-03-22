@@ -28,3 +28,15 @@ github:
   api:
     base-url: http://localhost:8089
     token: mock-token
+
+openai:
+  api:
+    key: ${OPENAI_API_KEY}
+    model: gpt-4o-mini  # 비용 절약
+
+oci:
+  object-storage:
+    namespace: your-namespace        # OCI 테넌시 네임스페이스
+    bucket-name: your-bucket-name    # 버킷 이름
+    region: ap-seoul-1               # 리전
+    config-file: ~/.oci/config       # OCI 인증 설정 파일 경로

@@ -1,0 +1,30 @@
+{
+  "id": 1296270,
+  "name": "backend-skills",
+  "full_name": "octocat/backend-skills",
+  "owner": {
+    "login": "octocat",
+    "avatar_url": "https://github.com/images/error/octocat_happy.gif",
+    "type": "User"
+  },
+  "html_url": "https://github.com/octocat/backend-skills",
+  "description": "Spring Boot and Python backend skill templates",
+  "stargazers_count": 85,
+  "forks_count": 20,
+  "size": 200,
+  "default_branch": "main",
+  "topics": ["spring", "python", "backend", "api"],
+  "license": "MIT",
+  "homepage": null,
+  "pushed_at": "2024-02-15T08:00:00Z",
+  "raw_metadata": null,
+  "files": [
+    {
+      "name": "agents.md",
+      "path": ".claude/agents.md",
+      "sha": "def333",
+      "html_url": "https://github.com/octocat/backend-skills/blob/main/.claude/agents.md",
+      "content": "# Agents\n\n## Role\nBackend development agent for Spring Boot and Python services.\n\n## Skills\n- Spring Boot\n- Python\n- REST API\n- Database Design\n\n## Behavior\n항상 RESTful 설계 원칙을 따르고 예외 처리를 철저히 합니다."
+    }
+  ]
+}

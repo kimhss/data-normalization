@@ -1,0 +1,30 @@
+{
+  "id": 1296269,
+  "name": "frontend-skills",
+  "full_name": "octocat/frontend-skills",
+  "owner": {
+    "login": "octocat",
+    "avatar_url": "https://github.com/images/error/octocat_happy.gif",
+    "type": "User"
+  },
+  "html_url": "https://github.com/octocat/frontend-skills",
+  "description": "React and Tailwind CSS frontend skill templates",
+  "stargazers_count": 120,
+  "forks_count": 30,
+  "size": 108,
+  "default_branch": "main",
+  "topics": ["react", "tailwind", "frontend"],
+  "license": "MIT",
+  "homepage": null,
+  "pushed_at": "2024-03-01T10:00:00Z",
+  "raw_metadata": null,
+  "files": [
+    {
+      "name": "agents.md",
+      "path": ".claude/agents.md",
+      "sha": "abc333",
+      "html_url": "https://github.com/octocat/frontend-skills/blob/main/.claude/agents.md",
+      "content": "# Agents\n\n## Role\nFrontend development agent for React applications.\n\n## Skills\n- React\n- TypeScript\n- Tailwind CSS\n\n## Behavior\n항상 컴포넌트 기반으로 설계하고 재사용성을 고려합니다."
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "id": 1296271,
+  "name": "fullstack-skills",
+  "full_name": "devteam/fullstack-skills",
+  "owner": {
+    "login": "devteam",
+    "avatar_url": "https://github.com/images/error/octocat_happy.gif",
+    "type": "Organization"
+  },
+  "html_url": "https://github.com/devteam/fullstack-skills",
+  "description": "React frontend and Spring Boot backend fullstack skill templates",
+  "stargazers_count": 300,
+  "forks_count": 75,
+  "size": 450,
+  "default_branch": "main",
+  "topics": ["react", "spring", "fullstack", "typescript", "java"],
+  "license": "Apache-2.0",
+  "homepage": "https://devteam.github.io",
+  "pushed_at": "2024-03-10T12:00:00Z",
+  "raw_metadata": null,
+  "files": [
+    {
+      "name": "SKILL.md",
+      "path": "frontend/SKILL.md",
+      "sha": "ghi111",
+      "html_url": "https://github.com/devteam/fullstack-skills/blob/main/frontend/SKILL.md",
+      "content": "# Frontend Skill\n\n## Description\nReact + TypeScript 기반 프론트엔드 개발 스킬입니다.\n\n## Usage\n```tsx\nconst App: React.FC = () => {\n  return <div className=\"app\">Hello</div>;\n};\n```"
+    },
+    {
+      "name": "SKILL.md",
+      "path": "backend/SKILL.md",
+      "sha": "ghi222",
+      "html_url": "https://github.com/devteam/fullstack-skills/blob/main/backend/SKILL.md",
+      "content": "# Backend Skill\n\n## Description\nSpring Boot + JPA 기반 백엔드 개발 스킬입니다.\n\n## Usage\n```java\n@Entity\npublic class User {\n    @Id\n    @GeneratedValue\n    private Long id;\n    private String name;\n}\n```"
+    }
+  ]
+}

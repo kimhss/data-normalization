@@ -8,3 +8,7 @@
 /dataSources.local.xml
 # 에디터 기반 HTTP 클라이언트 요청
 /httpRequests/
+
+db_dev.mv.db
+db_dev.trace.db
+

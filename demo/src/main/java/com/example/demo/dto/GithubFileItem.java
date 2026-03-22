@@ -18,28 +18,8 @@ public class GithubFileItem {
     private String sha;   // 파일 변경 감지용
 
     @JsonProperty("html_url")
-    private String htmlUrl;  // GitHub 웹 URL
+    private String htmlUrl;
 
-    @JsonProperty("url")
-    private String url;  // Contents API URL (파일 내용 fetch 시 사용)
-
-    @JsonProperty("repository")
-    private Repository repository;
-
-    @Getter
-    @NoArgsConstructor
-    public static class Repository {
-
-        @JsonProperty("full_name")
-        private String fullName;  // "octocat/my-repo"
-
-        @JsonProperty("stargazers_count")
-        private Integer stargazersCount;
-
-        @JsonProperty("forks_count")
-        private Integer forksCount;
-
-        @JsonProperty("pushed_at")
-        private String pushedAt;
-    }
+    @JsonProperty("content")
+    private String content;  // 파일 본문 (plain text)
 }
