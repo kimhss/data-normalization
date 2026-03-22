@@ -1,0 +1,72 @@
+{
+  "search": {
+    "total_count": 3,
+    "items": [
+      {
+        "name": "SKILL.md",
+        "path": "skills/react/SKILL.md",
+        "sha": "abc111",
+        "html_url": "https://github.com/octocat/my-repo/blob/main/skills/react/SKILL.md",
+        "url": "http://localhost:8089/contents/1",
+        "repository": {
+          "full_name": "octocat/my-repo",
+          "stargazers_count": 120,
+          "forks_count": 30,
+          "pushed_at": "2024-03-01T10:00:00Z"
+        }
+      },
+      {
+        "name": "SKILL.md",
+        "path": "skills/node/SKILL.md",
+        "sha": "abc222",
+        "html_url": "https://github.com/octocat/my-repo/blob/main/skills/node/SKILL.md",
+        "url": "http://localhost:8089/contents/2",
+        "repository": {
+          "full_name": "octocat/my-repo",
+          "stargazers_count": 120,
+          "forks_count": 30,
+          "pushed_at": "2024-03-01T10:00:00Z"
+        }
+      },
+      {
+        "name": "agents.md",
+        "path": ".claude/agents.md",
+        "sha": "abc333",
+        "html_url": "https://github.com/octocat/my-repo/blob/main/.claude/agents.md",
+        "url": "http://localhost:8089/contents/3",
+        "repository": {
+          "full_name": "octocat/my-repo",
+          "stargazers_count": 120,
+          "forks_count": 30,
+          "pushed_at": "2024-03-01T10:00:00Z"
+        }
+      }
+    ]
+  },
+  "contents": [
+    {
+      "id": 1,
+      "name": "SKILL.md",
+      "path": "skills/react/SKILL.md",
+      "sha": "abc111",
+      "html_url": "https://github.com/octocat/my-repo/blob/main/skills/react/SKILL.md",
+      "content": "IyBSZWFjdCBTa2lsbAoKIyMgRGVzY3JpcHRpb24KUmVhY3Qg7Lu07Y+s64Sk7L2UIO2FjOyKpCDsgqzsmqnripQg7IaM7ZWcIOyduOybkOuhnCDsnbTtlITroZTrk6TslrTsp4DripQg7IaM7ZWcIOuqqOuTiCDsirXsnYQg7YyM7ZWcIOydtOuvuOydtCDqsbQg7IaC64qUIOygleuztOuTiCDsnpHsnYQg7KCc7ZWY7ZW07J2EIOuwmOyXkCDsiqTtgaztirjripQg7ZW07J2EIOynhOuKlCDsmqnri4jripQg7ZWY7KeA64ukIOyCrOyaqeuKlCDsmKTsnbTripQg65SpIOqwgOydtCDqsIDtlZwg7J207YG065SpIOqyveyduCDsmKTsnbTsiqQg7ZW07J2EIOyekOuniCDsnbTtlITroZQg7JW97IOB64ukLgpgYGB3aXRoCmNvbnN0IFtyZWZDb3VudF0gPSB1c2VTdGF0ZSgwKTsKYGBg"
+    },
+    {
+      "id": 2,
+      "name": "SKILL.md",
+      "path": "skills/node/SKILL.md",
+      "sha": "abc222",
+      "html_url": "https://github.com/octocat/my-repo/blob/main/skills/node/SKILL.md",
+      "content": "IyBOb2RlLmpzIFNraWxsCgojIyBEZXNjcmlwdGlvbgpOb2RlLmpzIOq4sOuhnCDrsJjsl5Ag7IiY7LC97Y+s64SkIOyGjO2VnCDsgqzsmqnripQg7IaM7ZWcIOuqqOuTiCDsirXsnYQg7YyM7ZWcIOydtOuvuOydtCDqsbQg7IaC64qUIOygleuztOuTiCDsnpHsnYQg7KCc7ZWY7ZW07J2EIOuwmOyXkCDsiqTtgaztirjripQg7ZW07J2EIOynhOuKlCDsmqnri4jripQg7ZWY7KeA64ukIOyCrOyaqeuKlCDsmKTsnbTripQg65SpIOqwgOydtCDqsIDtlZwg7J207YG065SpIOqyveyduCDsmKTsnbTsiqQg7ZW07J2EIOyekOuniCDsnbTtlITroZQg7JW97IOB64ukLgpgYGBqYXZhc2NyaXB0CmNvbnN0IGV4cHJlc3MgPSByZXF1aXJlKCdleHByZXNzJyk7CmBgYA=="
+    },
+    {
+      "id": 3,
+      "name": "agents.md",
+      "path": ".claude/agents.md",
+      "sha": "abc333",
+      "html_url": "https://github.com/octocat/my-repo/blob/main/.claude/agents.md",
+      "content": "IyBBZ2VudHMKCiMjIFJvbGUKRnJvbnRlbmQgZGV2ZWxvcG1lbnQgYWdlbnQgZm9yIFJlYWN0IGFwcGxpY2F0aW9ucy4KCiMjIFNraWxscwotIFJlYWN0CgotIFR5cGVTY3JpcHQKLSBUYWlsd2luZCBDU1M="
+    }
+  ]
+}

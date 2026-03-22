@@ -1,0 +1,8 @@
+{
+  "file": "db.json",
+  "port": 8089,
+  "routes": {
+    "/search/code": "/search",
+    "/contents/:id": "/contents/:id"
+  }
+}

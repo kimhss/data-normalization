@@ -1,0 +1,4 @@
+{
+  "/search/code": "/search",
+  "/contents/:id": "/contents/:id"
+}
