@@ -10,6 +10,7 @@ import tools.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
 @Service
 @RequiredArgsConstructor
@@ -62,7 +63,14 @@ public class CrawlerService {
         log.info("파일 처리: {}", file.getPath());
 
         try {
-            GithubRepoItem repoItem = objectMapper.readValue(file, GithubRepoItem.class);
+            String json = Files.readString(file.toPath());
+            GithubRepoItem repoItem = objectMapper.readValue(json, GithubRepoItem.class);
+
+            // 누락 케이스 처리
+            if (repoItem.getFullName() == null || repoItem.getFullName().isBlank()) {
+                log.warn("full_name 누락 스킵: {}", file.getName());
+                return;
+            }
 
             if (repoItem.getFiles() == null || repoItem.getFiles().isEmpty()) {
                 log.warn("파일 목록 없음: {}", repoItem.getFullName());
@@ -73,6 +81,7 @@ public class CrawlerService {
 
             for (GithubFileItem fileItem : repoItem.getFiles()) {
                 String rawContent = fileItem.getContent();
+                // content 누락 케이스 처리
                 if (rawContent == null || rawContent.isBlank()) {
                     log.warn("content 없음: {}/{}", repoItem.getFullName(), fileItem.getPath());
                     continue;
@@ -87,8 +96,11 @@ public class CrawlerService {
                 }
             }
 
-        } catch (Exception e) {
+        } catch (IOException e) {
+            // 오염 케이스 처리 (JSON 파싱 실패)
             log.error("JSON 파싱 실패: {}", file.getName(), e);
+        } catch (Exception e) {
+            log.error("파일 처리 실패: {}", file.getName(), e);
         }
     }
 

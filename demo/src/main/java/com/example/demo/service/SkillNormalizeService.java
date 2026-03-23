@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.SkillMarkdownParser;
 import com.example.demo.dto.GithubFileItem;
 import com.example.demo.dto.GithubRepoItem;
+import com.example.demo.dto.LlmResult;
 import com.example.demo.entity.Agent;
 import com.example.demo.entity.Repository;
 import com.example.demo.entity.Skill;
@@ -14,11 +15,17 @@ import com.example.demo.repository.SkillRepository;
 import com.theokanning.openai.client.OpenAiApi;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
+import tools.jackson.databind.ObjectMapper;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +36,14 @@ public class SkillNormalizeService {
     private final RepositoryRepository repositoryRepository;
     private final SkillRepository skillRepository;
     private final AgentRepository agentRepository;
+    private final ObjectMapper objectMapper;
+    private final RestTemplate restTemplate;
+
+    @Value("${normalize.use-llm}")
+    private boolean useLlm;
+
+    @Value("${openai.api.key}")  // 추가
+    private String openAiApiKey;
 
     @Transactional
     public Repository normalizeRepository(GithubRepoItem repoItem) {
@@ -69,10 +84,13 @@ public class SkillNormalizeService {
 
     @Transactional
     public Skill normalizeSkill(Repository repository, GithubFileItem fileItem, String rawContent) {
-
         String skillName = parser.extractSkillName(rawContent, fileItem.getName());
 
-        // 이미 존재하면 content_hash 비교 후 업데이트
+        // use-llm 값에 따라 분기
+        String summary = useLlm
+                ? extractSummaryByLlm(rawContent)
+                : extractSummaryByRule(rawContent);
+
         return skillRepository.findByRepositoryIdAndSkillName(repository.getId(), skillName)
                 .map(existing -> {
                     if (!existing.getContentHash().equals(fileItem.getSha())) {
@@ -81,22 +99,24 @@ public class SkillNormalizeService {
                     }
                     return existing;
                 })
-                .orElseGet(() -> {
-                    Skill skill = Skill.builder()
-                            .repository(repository)
-                            .skillName(skillName)
-                            .contentMd(rawContent)
-                            .contentHash(fileItem.getSha())
-                            .build();
-
-                    return skillRepository.save(skill);
-                });
+                .orElseGet(() -> skillRepository.save(
+                        Skill.builder()
+                                .repository(repository)
+                                .skillName(skillName)
+                                .contentMd(rawContent)
+                                .contentHash(fileItem.getSha())
+                                .build()
+                ));
     }
 
     @Transactional
     public Agent normalizeAgent(Repository repository, GithubFileItem fileItem, String rawContent) {
 
-        // 레포당 하나만 존재, content_hash 비교 후 업데이트
+        // agents.md는 구조가 자유로워서 LLM 우선
+        String summary = useLlm
+                ? extractSummaryByLlm(rawContent)
+                : extractSummaryByRule(rawContent);
+
         return agentRepository.findByRepositoryId(repository.getId())
                 .map(existing -> {
                     if (!existing.getContentHash().equals(fileItem.getSha())) {
@@ -105,15 +125,59 @@ public class SkillNormalizeService {
                     }
                     return existing;
                 })
-                .orElseGet(() -> {
-                    Agent agent = Agent.builder()
-                            .repository(repository)
-                            .contentMd(rawContent)
-                            .contentHash(fileItem.getSha())
-                            .build();
+                .orElseGet(() -> agentRepository.save(
+                        Agent.builder()
+                                .repository(repository)
+                                .contentMd(rawContent)
+                                .contentHash(fileItem.getSha())
+                                .build()
+                ));
+    }
 
-                    return agentRepository.save(agent);
-                });
+    // 규칙 기반 summary 추출
+    private String extractSummaryByRule(String content) {
+        return parser.extractSummary(content);
+    }
+
+    // LLM 기반 summary 추출
+    private String extractSummaryByLlm(String content) {
+        try {
+            String prompt = """
+                아래 마크다운을 분석해서 JSON만 반환해줘. 다른 텍스트 없이 JSON만.
+                {
+                  "summary": "핵심 내용 2~3문장"
+                }
+                ---
+                %s
+                """.formatted(content.substring(0, Math.min(content.length(), 3000)));
+
+            // OpenAI API 호출
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Authorization", "Bearer " + openAiApiKey);
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
+            Map<String, Object> body = Map.of(
+                    "model", "gpt-4o-mini",
+                    "messages", List.of(Map.of("role", "user", "content", prompt)),
+                    "max_tokens", 500
+            );
+
+            ResponseEntity<Map> response = restTemplate.exchange(
+                    "https://api.openai.com/v1/chat/completions",
+                    HttpMethod.POST,
+                    new HttpEntity<>(body, headers),
+                    Map.class
+            );
+
+            String json = (String) ((Map) ((Map) ((List) response.getBody()
+                    .get("choices")).get(0)).get("message")).get("content");
+
+            return objectMapper.readValue(json, LlmResult.class).getSummary();
+
+        } catch (Exception e) {
+            log.error("LLM 호출 실패, 규칙 기반으로 대체", e);
+            return extractSummaryByRule(content); // LLM 실패 시 규칙 기반으로 폴백
+        }
     }
 
     // 레포 정보 기반 track 분류

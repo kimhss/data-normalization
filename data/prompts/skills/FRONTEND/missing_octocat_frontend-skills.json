@@ -1,0 +1,22 @@
+{
+  "id": 9999991,
+  "name": "frontend-skills",
+  "full_name": "octocat/frontend-skills-missing",
+  "owner": {
+    "login": "octocat",
+    "avatar_url": null,
+    "type": "User"
+  },
+  "html_url": "https://github.com/octocat/frontend-skills-missing",
+  "description": null,
+  "stargazers_count": null,
+  "forks_count": null,
+  "size": null,
+  "default_branch": "main",
+  "topics": null,
+  "license": null,
+  "homepage": null,
+  "pushed_at": null,
+  "raw_metadata": null,
+  "files": []
+}

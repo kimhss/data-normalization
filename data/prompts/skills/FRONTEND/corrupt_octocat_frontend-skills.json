@@ -1,0 +1,18 @@
+{
+  "id": "잘못된타입",
+  "name": "",
+  "full_name": null,
+  "owner": null,
+  "html_url": "not-a-valid-url",
+  "description": 12345,
+  "stargazers_count": -1,
+  "forks_count": -1,
+  "size": null,
+  "default_branch": "",
+  "topics": "string인데 배열이어야함",
+  "license": null,
+  "homepage": null,
+  "pushed_at": "invalid-date-format",
+  "raw_metadata": null,
+  "files": null
+}
